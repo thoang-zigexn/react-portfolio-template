@@ -82,76 +82,58 @@
             "items": [
                 {
                     "id": 1,
-                    "faIcon": "fa-solid fa-phone",
-                    "faIconColors": { "bg": "", "fill": "" },
-                    "label": "+1 (123) 456-7890",
-                    "link": {"href": "tel:11234567890", "tooltipString": "call_me"},
-                    "copyToClipboardButton": true,
-                    "locales": {
-                        "en": {"title": "Phone"},
-                        "es": {"title": "Teléfono"},
-                        "fr": {"title": "Téléphone"},
-                        "ko": {"title": "전화"}
-                    }
-                },
-                {
-                    "id":2,
                     "faIcon": "fa-solid fa-envelope",
                     "faIconColors": { "bg": "", "fill": "" },
-                    "label": "mark.choi@email.com",
-                    "link": {"href": "mailto:mark.choi@email.com", "tooltipString": "email_me"},
+                    "label": "thoangnguyngoc@zigexn.vn",
+                    "link": {"href": "mailto:thoangnguyngoc@zigexn.vn", "tooltipString": "email_me"},
                     "copyToClipboardButton": true,
                     "locales": {
                         "en": {"title": "E-mail"},
+                        "es": {"title": "Correo"},
+                        "fr": {"title": "E-mail"},
                         "ko": {"title": "이메일"}
                     }
                 },
                 {
-                    "id": 3,
-                    "faIcon": "fa-brands fa-linkedin",
+                    "id": 2,
+                    "faIcon": "fa-brands fa-github",
                     "faIconColors": { "bg": "", "fill": "" },
-                    "label": "@markchoi",
-                    "link": {"href": "https://linkedin.com/in/", "tooltipString": "open_website"},
+                    "label": "@thoangne",
+                    "link": {"href": "https://github.com/thoangne", "tooltipString": "see_on_github"},
                     "copyToClipboardButton": false,
                     "locales": {
-                        "en": {"title": "LinkedIn"},
-                        "ko": {"title": "링크드인"}
+                        "en": {"title": "GitHub"},
+                        "es": {"title": "GitHub"},
+                        "fr": {"title": "GitHub"},
+                        "ko": {"title": "GitHub"}
                     }
                 },
                 {
-                    "id": 4,
+                    "id": 3,
                     "faIcon": "fa-brands fa-facebook",
                     "faIconColors": { "bg": "", "fill": "" },
-                    "label": "Mark Choi",
-                    "link": {"href": "https://facebook.com/profiles/mark.choi.855/default", "tooltipString": "open_website"},
+                    "label": "thoang.nguy.4",
+                    "link": {"href": "https://www.facebook.com/thoang.nguy.4", "tooltipString": "open_website"},
                     "copyToClipboardButton": false,
                     "locales": {
                         "en": {"title": "Facebook"},
+                        "es": {"title": "Facebook"},
+                        "fr": {"title": "Facebook"},
                         "ko": {"title": "페이스북"}
                     }
                 },
                 {
-                    "id": 5,
+                    "id": 4,
                     "faIcon": "fa-brands fa-instagram",
                     "faIconColors": { "bg": "", "fill": "" },
-                    "label": "@codingmark",
-                    "link": {"href": "https://instagram.com/", "tooltipString": "open_website"},
+                    "label": "@nguyngocthoang.4444",
+                    "link": {"href": "https://www.instagram.com/nguyngocthoang.4444/", "tooltipString": "open_website"},
                     "copyToClipboardButton": false,
                     "locales": {
                         "en": {"title": "Instagram"},
+                        "es": {"title": "Instagram"},
+                        "fr": {"title": "Instagram"},
                         "ko": {"title": "인스타그램"}
-                    }
-                },
-                {
-                    "id": 6,
-                    "faIcon": "fa-brands fa-tiktok",
-                    "faIconColors": { "bg": "", "fill": "" },
-                    "label": "@markchoi",
-                    "link": {"href": "https://tiktok.com/@markchoi", "tooltipString": "open_website"},
-                    "copyToClipboardButton": false,
-                    "locales": {
-                        "en": { "title": "TikTok" },
-                        "ko": { "title": "틱톡" }
                     }
                 }
             ]
