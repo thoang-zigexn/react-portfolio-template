@@ -93,3 +93,107 @@ div.article-portfolio-item-body {
 div.article-portfolio-item-footer {
     margin-top: 10px;
 }
+
+/** --------- PORTFOLIO SEARCH BAR --------- */
+div.portfolio-search-bar {
+    margin-bottom: 16px;
+    width: 100%;
+
+    div.portfolio-search-bar-inner {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background-color: var(--theme-boards-background);
+        border: 1px solid var(--theme-borders);
+        border-radius: $standard-border-radius;
+        padding: 0 12px;
+        transition: border-color 0.15s ease;
+
+        &:focus-within {
+            border-color: var(--theme-primary);
+        }
+    }
+
+    .portfolio-search-bar-icon {
+        color: var(--theme-texts-light-2);
+        font-size: 0.8rem;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+
+    .portfolio-search-bar-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--theme-texts);
+        padding: 10px 0;
+
+        &::placeholder {
+            color: var(--theme-texts-light-2);
+        }
+
+        /* Hide the browser-native × that appears in webkit search inputs */
+        &::-webkit-search-cancel-button {
+            display: none;
+        }
+    }
+
+    .portfolio-search-bar-clear {
+        background: transparent;
+        border: none;
+        padding: 4px 6px;
+        cursor: pointer;
+        color: var(--theme-texts-light-2);
+        font-size: 0.75rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        line-height: 1;
+
+        &:hover {
+            color: var(--theme-texts);
+            background-color: var(--theme-borders);
+        }
+    }
+}
+
+/** --------- PORTFOLIO EMPTY STATE --------- */
+div.portfolio-search-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--theme-texts-light-1);
+
+    .portfolio-search-empty-icon {
+        font-size: 2rem;
+        margin-bottom: 16px;
+        opacity: 0.35;
+    }
+
+    p {
+        margin-bottom: 16px;
+
+        strong {
+            color: var(--theme-texts);
+        }
+    }
+
+    button.portfolio-search-empty-reset {
+        background: transparent;
+        border: 1px solid var(--theme-borders);
+        border-radius: $standard-border-radius;
+        color: var(--theme-primary);
+        cursor: pointer;
+        padding: 7px 18px;
+
+        &:hover {
+            background-color: var(--theme-borders);
+        }
+    }
+}
