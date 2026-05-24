@@ -1,13 +1,15 @@
 import "./ArticlePortfolio.scss"
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import Article from "/src/components/articles/base/Article.jsx"
 import Transitionable from "/src/components/capabilities/Transitionable.jsx"
-import {useViewport} from "/src/providers/ViewportProvider.jsx"
-import {useConstants} from "/src/hooks/constants.js"
+import { useViewport } from "/src/providers/ViewportProvider.jsx"
+import { useConstants } from "/src/hooks/constants.js"
 import AvatarView from "/src/components/generic/AvatarView.jsx"
-import {Tag, Tags} from "/src/components/generic/Tags.jsx"
+import { Tag, Tags } from "/src/components/generic/Tags.jsx"
 import ArticleItemPreviewMenu from "/src/components/articles/partials/ArticleItemPreviewMenu.jsx"
-import {useLanguage} from "/src/providers/LanguageProvider.jsx"
+import { useLanguage } from "/src/providers/LanguageProvider.jsx"
+import PortfolioSearchBar from "/src/components/articles/partials/PortfolioSearchBar.jsx"
+import { filterItemsBySearch } from "/src/hooks/utils/portfolioSearch.js"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
@@ -17,6 +19,16 @@ import {useLanguage} from "/src/providers/LanguageProvider.jsx"
  */
 function ArticlePortfolio({ dataWrapper, id }) {
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
+    const [searchQuery, setSearchQuery] = useState('')
+    const [debouncedQuery, setDebouncedQuery] = useState('')
+
+    // Debounce: wait 300 ms after user stops typing before filtering
+    useEffect(() => {
+        const timer = setTimeout(() => setDebouncedQuery(searchQuery), 300)
+        return () => clearTimeout(timer)
+    }, [searchQuery])
+
+    const clearSearch = () => setSearchQuery('')
 
     return (
         <Article id={dataWrapper.uniqueId}
@@ -25,8 +37,26 @@ function ArticlePortfolio({ dataWrapper, id }) {
                  className={`article-portfolio`}
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
-            <ArticlePortfolioItems dataWrapper={dataWrapper}
-                                   selectedItemCategoryId={selectedItemCategoryId}/>
+
+            {/* ARIA live region — screen readers announce result count changes */}
+            <div aria-live="polite" aria-atomic="true" className="visually-hidden">
+                {debouncedQuery
+                    ? `${filterItemsBySearch(dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId), debouncedQuery).length} results for ${debouncedQuery}`
+                    : ''}
+            </div>
+
+            <PortfolioSearchBar
+                value={searchQuery}
+                onChange={setSearchQuery}
+                onClear={clearSearch}
+            />
+
+            <ArticlePortfolioItems
+                dataWrapper={dataWrapper}
+                selectedItemCategoryId={selectedItemCategoryId}
+                searchQuery={debouncedQuery}
+                onClearSearch={clearSearch}
+            />
         </Article>
     )
 }
@@ -34,25 +64,45 @@ function ArticlePortfolio({ dataWrapper, id }) {
 /**
  * @param {ArticleDataWrapper} dataWrapper
  * @param {String} selectedItemCategoryId
+ * @param {String} searchQuery  Debounced query string
+ * @param {Function} onClearSearch
  * @return {JSX.Element}
  * @constructor
  */
-function ArticlePortfolioItems({ dataWrapper, selectedItemCategoryId }) {
+function ArticlePortfolioItems({ dataWrapper, selectedItemCategoryId, searchQuery, onClearSearch }) {
     const constants = useConstants()
     const language = useLanguage()
     const viewport = useViewport()
 
-    const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
-    const customBreakpoint = viewport.getCustomBreakpoint(constants.SWIPER_BREAKPOINTS_FOR_THREE_SLIDES)
+    const categoryFilteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
+    const filteredItems = filterItemsBySearch(categoryFilteredItems, searchQuery)
 
+    const customBreakpoint = viewport.getCustomBreakpoint(constants.SWIPER_BREAKPOINTS_FOR_THREE_SLIDES)
     const itemsPerRow = customBreakpoint?.slidesPerView || 1
     const itemsPerRowClass = `article-portfolio-items-${itemsPerRow}-per-row`
 
-    const refreshFlag = dataWrapper.categories?.length ?
-        selectedItemCategoryId + "-" + language.getSelectedLanguage()?.id :
-        language.getSelectedLanguage()?.id
+    const refreshFlag = dataWrapper.categories?.length
+        ? `${selectedItemCategoryId}-${language.getSelectedLanguage()?.id}-${searchQuery}`
+        : `${language.getSelectedLanguage()?.id}-${searchQuery}`
 
-    if(dataWrapper.categories?.length) {
+    // Empty state: query matched nothing
+    if (filteredItems.length === 0 && searchQuery) {
+        return (
+            <div className="portfolio-search-empty">
+                <i className="fa-solid fa-magnifying-glass portfolio-search-empty-icon" aria-hidden="true"/>
+                <p className="text-3">
+                    No projects found for <strong>"{searchQuery}"</strong>.
+                </p>
+                <button type="button"
+                        className="portfolio-search-empty-reset text-3"
+                        onClick={onClearSearch}>
+                    Clear search
+                </button>
+            </div>
+        )
+    }
+
+    if (dataWrapper.categories?.length) {
         return (
             <Transitionable id={dataWrapper.uniqueId}
                             refreshFlag={refreshFlag}
@@ -150,7 +200,7 @@ function ArticlePortfolioItemFooter({ itemWrapper }) {
     const hasScreenshotsOrVideo = itemWrapper.preview?.hasScreenshotsOrYoutubeVideo
 
     const previewMenuAvailable = hasPreview && (hasPreviewLinks || hasScreenshotsOrVideo)
-    if(!previewMenuAvailable)
+    if (!previewMenuAvailable)
         return <></>
 
     return (
